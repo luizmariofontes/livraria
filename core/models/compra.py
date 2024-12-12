@@ -32,7 +32,7 @@ class Compra(models.Model):
 
 class ItensCompra(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE, related_name="itens")
-    livro = models.ForeignKey(Livro, on_delete=models.PROTECT, related_name="+")
+    livro = models.ForeignKey(Livro, on_delete=models.PROTECT, related_name="itens_compra")
     preco = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     quantidade = models.IntegerField(default=1)
     @property
