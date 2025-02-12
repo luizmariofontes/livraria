@@ -7,12 +7,20 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+
 from core.models import Compra
 from core.serializers import CompraCreateUpdateSerializer, CompraListSerializer, CompraSerializer
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class CompraViewSet(ModelViewSet):
     queryset = Compra.objects.all()
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_fields = ["usuario__email", "status", "data"]
+    search_fields = ["usuario__email"]
+    ordering_fields = ["usuario__email", "status", "data"]
+    ordering = ["-data"]
 
 
     def get_queryset(self):
