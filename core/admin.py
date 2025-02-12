@@ -5,7 +5,7 @@ Django admin customization.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from core.models import Autor, Categoria, Editora, Livro, User, Compra, ItensCompra 
+from core.models import Autor, Categoria, Editora, Livro, User, Compra, ItensCompra, Avaliacao
 
 
 @admin.register(User)
@@ -67,6 +67,7 @@ class CategoriaAdmin(admin.ModelAdmin):
     ordering = ('descricao',)
     list_per_page = 10
 
+
 @admin.register(Editora)
 class EditoraAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'cidade')
@@ -82,6 +83,17 @@ class LivroAdmin(admin.ModelAdmin):
     list_filter = ('editora', 'categoria')
     ordering = ('titulo', 'editora', 'categoria')
     list_per_page = 25
+
+@admin.register(Avaliacao)
+class AvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ('livro', 'editora', 'categoria', 'nota', 'data_avaliacao')
+    search_fields = ('livro__titulo', 'editora__nome', 'categoria__nome')
+    readonly_fields = ('editora', 'categoria') 
+
+    def save_model(self, request, obj, form, change):
+        """Força o preenchimento automático antes de salvar no admin."""
+        obj.save()  
+        super().save_model(request, obj, form, change)
 
 class ItensCompraInline(admin.TabularInline):
     model = ItensCompra
