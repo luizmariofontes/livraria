@@ -91,7 +91,6 @@ class AvaliacaoAdmin(admin.ModelAdmin):
     readonly_fields = ('editora', 'categoria') 
 
     def save_model(self, request, obj, form, change):
-        """Força o preenchimento automático antes de salvar no admin."""
         obj.save()  
         super().save_model(request, obj, form, change)
 
